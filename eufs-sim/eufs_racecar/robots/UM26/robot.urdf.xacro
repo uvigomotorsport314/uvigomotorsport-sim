@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot name="UM26" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- ***************** -->
+    <!-- Config parameters -->
+    <!-- ***************** -->
+
+    <!--  Load the config file  -->
+    <xacro:property name="config" value="${load_yaml('$(arg config_file)')}"/>
+
+    <!-- ***************** -->
+    <!-- Global parameters -->
+    <!-- ***************** -->
+
+    <xacro:property name="PI" value="3.1415926535897931"/>
+
+    <!-- If the gazebo_ros_race_car_model should publish the ground truth tf -->
+    <xacro:arg name="publish_tf" default="false"/>
+    <!-- If the perception stack should be simulated or if sensors should be used -->
+    <xacro:arg name="simulate_perception" default="false"/>
+
+    <!-- ***************** -->
+    <!-- Imported elements -->
+    <!-- ***************** -->
+
+    <!--  Import the wheels  -->
+    <xacro:include filename="$(find eufs_racecar)/urdf/wheels.urdf.xacro"/>
+
+    <!-- Import EUFS base element with the chassis -->
+    <xacro:include filename="$(find eufs_racecar)/urdf/eufs_base.urdf.xacro" />
+
+    <!-- Import all available sensors -->
+    <xacro:include filename="$(find eufs_sensors)/urdf/all_sensors.urdf.xacro" />
+
+    <!--  Include the plugins  -->
+    <xacro:include filename="$(find eufs_plugins)/urdf/eufs_plugins.gazebo.xacro" />
+
+    <!-- *************** -->
+    <!-- Robots Elements -->
+    <!-- *************** -->
+
+    <!-- Chassis of the car -->
+    <xacro:eufs_base chassis_mesh="file://$(find eufs_racecar)/meshes/UM26_car.stl"/>
+
+    <!-- Wheels -->
+    <xacro:wheels chassis_width="1.6" wheelbase="1.580"/>
+
+    <!-- *********************************************** -->
+    <!--                 MAIN SENSORS                    -->
+    <!-- *********************************************** -->
+
+    <!--     LOCATIONS: (XYZ)
+    GPS: -0.79 0.0 0.4
+    STEREO CAM: -0.110 0.0 0.800 -->
+
+    <xacro:sensor_gps parent="chassis" prefix="gps">
+        <origin xyz="-0.79 0.0 0.4" rpy="0 0 0"/>
+    </xacro:sensor_gps>
+
+    <!-- ZED Camera with topic remapping to match uvigo_msgs -->
+    <!-- Note: Standard ZED plugin publishes to /zed/left/image_rect_color -->
+    <!-- Your software expects /camera/raw_image -->
+    <xacro:zed_camera parent="chassis" prefix="zed" active="$(arg simulate_perception)">
+        <origin xyz="-0.110 0.0 0.800" rpy="0 0 0"/>
+    </xacro:zed_camera>
+
+    <!-- ZED IMU - Remapped to match code expectations -->
+    <xacro:sensor_imu parent="chassis" prefix="zed_imu" topic_prefix="/camera">
+        <origin xyz="-0.110 0.0 0.800" rpy="0 0 0"/>
+    </xacro:sensor_imu>
+
+</robot>

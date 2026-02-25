@@ -1,0 +1,112 @@
+<sdf version='1.6'>
+  <world name='small_track'>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>-40 40 20 0 0.667643 -1</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <!-- WORLD SETINGS -->
+    <scene>
+      <ambient>1.0 1.0 1.0 1.0</ambient>
+      <shadows>false</shadows>
+    </scene>
+
+    <spherical_coordinates>
+      <!-- currently gazebo has a bug: instead of outputing lat, long, altitude in ENU
+      (x = East, y = North and z = Up) as the default configurations, it's outputting (-E)(-N)U,
+      therefore we rotate the default frame 180 so that it would go back to ENU -->
+      <heading_deg>180</heading_deg>
+
+      <!-- Escola de Enxeñaría Industrial (EEI) coordinates -->
+      <latitude_deg>42.1697</latitude_deg>
+      <longitude_deg>-8.6882</longitude_deg>
+    </spherical_coordinates>
+
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.5 -1</direction>
+    </light>
+
+    <!-- MODELS -->
+    <include>
+      <uri>model://eei_parking</uri>
+      <pose>0.0 0.0 0.0 0 0 0</pose>
+    </include>
+
+    <!-- Folding Tent 3x2m -->
+    <include>
+      <name>folding_tent_1</name>
+      <uri>model://folding_tent</uri>
+      <!-- Placed arbitrarily in front of a hypothetical team area -->
+      <pose>25 35 0 0 0 0</pose>
+    </include>
+
+    <!-- Forest Trees -->
+    <include>
+      <name>pine_tree_1</name>
+      <uri>model://pine_tree</uri>
+      <pose>30 30 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>pine_tree_2</name>
+      <uri>model://pine_tree</uri>
+      <pose>-30 35 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>oak_tree_1</name>
+      <uri>model://oak_tree</uri>
+      <pose>35 -30 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>oak_tree_2</name>
+      <uri>model://oak_tree</uri>
+      <pose>-35 -35 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>oak_tree_3</name>
+      <uri>model://oak_tree</uri>
+      <pose>40 5 0 0 0 0</pose>
+    </include>
+
+    <!-- Additional Trees based on eei_parking context -->
+    <include>
+      <name>pine_tree_3</name>
+      <uri>model://pine_tree</uri>
+      <pose>45 25 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>pine_tree_4</name>
+      <uri>model://pine_tree</uri>
+      <pose>-45 25 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>oak_tree_4</name>
+      <uri>model://oak_tree</uri>
+      <pose>50 -10 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>oak_tree_5</name>
+      <uri>model://oak_tree</uri>
+      <pose>-40 -45 0 0 0 0</pose>
+    </include>
+    
+    <include>
+      <uri>model://small_track</uri>
+      <pose>0 0 0.5 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
